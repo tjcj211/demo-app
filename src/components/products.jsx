@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
+import { Link } from 'react-router-dom';
 
 class Products extends Component {
 	state = {
@@ -25,9 +26,9 @@ class Products extends Component {
 				<ul>
 					{sortedProducts.map((product) => (
 						<li key={product.id}>
-							<a href={`/products/${product.id}`}>
+							<Link to={`/products/${product.id}`}>
 								{product.name}
-							</a>
+							</Link>
 						</li>
 					))}
 				</ul>
