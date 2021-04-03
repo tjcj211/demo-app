@@ -4,6 +4,7 @@ import NavBar from './components/navBar';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import Products from './components/products';
 import ProductDetails from './components/productDetails';
+import PersonDetails from './components/PersonDetails';
 import About from './components/about';
 import NotFound from './components/notFound';
 
@@ -12,6 +13,7 @@ function App() {
 		<div className="container">
 			<NavBar />
 			<Switch>
+				<Route path="/people/:id" component={PersonDetails} />
 				<Route path="/products/:id" component={ProductDetails} />
 				<Route
 					path="/products"
