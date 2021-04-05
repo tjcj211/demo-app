@@ -8,7 +8,13 @@ class LoginForm extends Component {
 	};
 	handleSubmit = (e) => {
 		e.preventDefault();
-		console.log(this.state.email + ' ' + this.state.password);
+		//console.log(this.state.email + ' ' + this.state.password);
+	};
+	handleChange = (e) => {
+		const account = { ...this.state.account };
+		account[e.currentTarget.name] = e.currentTarget.value;
+		this.setState({ account });
+		console.log('State Updated');
 	};
 	render() {
 		return (
@@ -21,6 +27,7 @@ class LoginForm extends Component {
 							name="email"
 							className="form-control"
 							value={this.state.account.email}
+							onChange={this.handleChange}
 							id="email"
 							aria-describedby="emailHelp"
 						/>
@@ -30,6 +37,7 @@ class LoginForm extends Component {
 								type="password"
 								name="password"
 								value={this.state.account.password}
+								onChange={this.handleChange}
 								className="form-control"
 								id="password"
 							/>
