@@ -7,12 +7,14 @@ import ProductDetails from './components/productDetails';
 import PersonDetails from './components/PersonDetails';
 import About from './components/about';
 import NotFound from './components/notFound';
+import LoginForm from './components/LoginForm';
 
 function App() {
 	return (
 		<div className="container">
 			<NavBar />
 			<Switch>
+				<Route path="/login" component={LoginForm}></Route>
 				<Route path="/people/:id" component={PersonDetails} />
 				<Route path="/products/:id" component={ProductDetails} />
 				<Route
