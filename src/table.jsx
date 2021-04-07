@@ -30,10 +30,18 @@ class Table extends Component {
 		const toggle = !this.state.toggle;
 		this.setState({ toggle }); //this.state.toggle =toggle is incorrect
 	}
-	handleDelete = (person) => {
+	handleDelete = async (person) => {
 		const people = [...this.state.people];
 		const newPeople = people.filter((p) => p.id !== person.id);
 		this.setState({ people: newPeople });
+		try {
+			await axios.delete(apiEndpoint + '/' + person.id);
+		} catch (error) {
+			if (error.respond && error.respond.status == 404) {
+				alert('This person has already been deleted');
+				this.setState({ people });
+			}
+		}
 	};
 	handleAdd = async () => {
 		const obj = { name: 'Bob', email: 'email@email.com' };
