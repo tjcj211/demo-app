@@ -5,17 +5,33 @@ class LoginForm extends Component {
 			email: '',
 			password: '',
 		},
+		errors: {},
 	};
+
+	validate = () => {
+		const errors = {};
+		const { account } = this.state;
+		if (account.email.trim() === '') errors.email = 'Email is required';
+		if (account.password.trim() === '')
+			errors.password = 'Password is required';
+		return Object.keys(errors).length === 0 ? null : errors;
+	};
+
 	handleSubmit = (e) => {
 		e.preventDefault();
+		const errors = this.validate();
+		console.log(errors);
+		this.setState({ errors });
 		//console.log(this.state.email + ' ' + this.state.password);
 	};
+
 	handleChange = (e) => {
 		const account = { ...this.state.account };
 		account[e.currentTarget.name] = e.currentTarget.value;
 		this.setState({ account });
 		console.log('State Updated');
 	};
+
 	render() {
 		return (
 			<div>
@@ -31,6 +47,11 @@ class LoginForm extends Component {
 							id="email"
 							aria-describedby="emailHelp"
 						/>
+						{this.state.errors.email && (
+							<div className="alert alert-danger">
+								{this.state.errors.email}
+							</div>
+						)}
 						<div className="form-group">
 							<label htmlFor="password">Password</label>
 							<input
@@ -42,6 +63,11 @@ class LoginForm extends Component {
 								id="password"
 							/>
 						</div>
+						{this.state.errors.password && (
+							<div className="alert alert-danger">
+								{this.state.errors.password}
+							</div>
+						)}
 						<button type="submit" className="btn btn-primary">
 							Login
 						</button>
