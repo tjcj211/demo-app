@@ -13,7 +13,7 @@ class TableBody extends Component {
 								{person.name}
 							</Link>
 						</td>
-						<td>{person.job}</td>
+						<td>{person.email}</td>
 						<td>
 							<button
 								onClick={() => {

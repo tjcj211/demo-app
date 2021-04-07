@@ -16,7 +16,7 @@ class PersonDetails extends Component {
 				<h3>Person Details</h3>
 				<div>id: {person.id} </div>
 				<div>Name: {person.name} </div>
-				<div>Description: {person.description} </div>
+				<div>{`Company ${person.company.name} ${person.company.catchPhrase}`}</div>
 			</div>
 		);
 	}
