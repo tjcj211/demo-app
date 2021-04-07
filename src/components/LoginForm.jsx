@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Joi from 'joi-browser';
+import Joi, { join } from 'joi-browser';
 class LoginForm extends Component {
 	state = {
 		account: {
@@ -25,12 +25,11 @@ class LoginForm extends Component {
 	};
 
 	validateProperty = ({ name, value }) => {
-		if (name === 'email') {
-			if (value.trim() === '') return 'Username is required';
-		}
-		if (name === 'password') {
-			if (value.trim() === '') return 'Password is required';
-		}
+		const obj = { [name]: value };
+		const schema = { [name]: this.schema[name] };
+		const { error } = Joi.validate(obj, schema);
+		if (!error) return null;
+		return error.details[0].message;
 	};
 
 	handleSubmit = (e) => {
@@ -87,7 +86,11 @@ class LoginForm extends Component {
 								{this.state.errors.password}
 							</div>
 						)}
-						<button type="submit" className="btn btn-primary">
+						<button
+							disabled={this.validate()}
+							type="submit"
+							className="btn btn-primary"
+						>
 							Login
 						</button>
 					</div>
