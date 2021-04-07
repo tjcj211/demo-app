@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import TableBody from './components/tableBody';
 import TableHead from './components/tableHead';
-import { getPeople } from './service/PeopleService';
 const apiEndpoint = 'https://jsonplaceholder.typicode.com/users';
 class Table extends Component {
 	constructor(props) {
@@ -36,6 +35,12 @@ class Table extends Component {
 		const newPeople = people.filter((p) => p.id !== person.id);
 		this.setState({ people: newPeople });
 	};
+	handleAdd = async () => {
+		const obj = { name: 'Bob', email: 'email@email.com' };
+		const { data: person } = await axios.post(apiEndpoint, obj);
+		const people = [person, ...this.state.people];
+		this.setState({ people });
+	};
 	filterPeopleByName = () => {
 		let people = [...this.state.people];
 		if (this.state.query) {
@@ -60,6 +65,12 @@ class Table extends Component {
 					value={this.state.query}
 					onChange={this.handleSearch}
 				/>
+				<button
+					className="btn btn-primary"
+					onClick={this.handleAdd}
+				>
+					Add
+				</button>
 				<table className="table">
 					<TableHead />
 					<TableBody

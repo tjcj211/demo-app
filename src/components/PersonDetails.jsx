@@ -1,22 +1,27 @@
 import React, { Component } from 'react';
-import { getPerson } from '../service/PeopleService';
+import axios from 'axios';
+const apiEndpoint = 'https://jsonplaceholder.typicode.com/users';
 class PersonDetails extends Component {
 	state = {
 		person: {},
 	};
-	componentDidMount() {
-		const person = getPerson(this.props.match.params.id);
+
+	async componentDidMount() {
+		const { data: person } = await axios.get(
+			apiEndpoint + '/' + this.props.match.params.id
+		);
 		if (!person) return this.props.history.replace('/not-found');
 		this.setState({ person });
 	}
+
 	render() {
 		const { person } = this.state;
 		return (
 			<div>
 				<h3>Person Details</h3>
-				<div>id: {person.id} </div>
+				<div>Id: {person.id} </div>
 				<div>Name: {person.name} </div>
-				<div>{`Company ${person.company.name} ${person.company.catchPhrase}`}</div>
+				<div>Phone: {person.phone}</div>
 			</div>
 		);
 	}
