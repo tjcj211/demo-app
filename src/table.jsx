@@ -1,23 +1,8 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import TableBody from './components/tableBody';
 import TableHead from './components/tableHead';
+import { getPeople, deletePerson, savePerson } from './service/peopleService';
 const apiEndpoint = 'https://jsonplaceholder.typicode.com/users';
-
-axios.interceptors.response.use(null, (error) => {
-	console.log('interceptor');
-	const expectedError =
-		error.response &&
-		error.response.status >= 400 &&
-		error.response.statues < 500;
-	if (!expectedError) {
-		//only server-side errors, 400-500 are reserved for client errors
-		console.log('logging the error', error);
-		alert('An unexpected error occurred.');
-	}
-
-	return Promise.reject(error); //reject the promise to be handled by the client.
-});
 
 class Table extends Component {
 	constructor(props) {
@@ -30,7 +15,7 @@ class Table extends Component {
 		query: '',
 	};
 	async componentDidMount() {
-		const { data } = await axios.get(apiEndpoint);
+		const { data } = await getPeople();
 		this.setState({ people: data });
 	}
 	handleSearch = (event) => {
@@ -51,7 +36,7 @@ class Table extends Component {
 		const newPeople = people.filter((p) => p.id !== person.id);
 		this.setState({ people: newPeople });
 		try {
-			await axios.delete(apiEndpoint + '/' + person.id);
+			await deletePerson(person.id);
 		} catch (error) {
 			console.log('delete exception');
 			if (error.respond && error.respond.status === 404) {
@@ -62,7 +47,7 @@ class Table extends Component {
 	};
 	handleAdd = async () => {
 		const obj = { name: 'Bob', email: 'email@email.com' };
-		const { data: person } = await axios.post(apiEndpoint, obj);
+		const { data: person } = await savePerson(obj);
 		const people = [person, ...this.state.people];
 		this.setState({ people });
 	};

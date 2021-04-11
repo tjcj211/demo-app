@@ -1,25 +1,19 @@
 import React, { Component } from 'react';
-import axios from 'axios';
-const apiEndpoint = 'https://jsonplaceholder.typicode.com/users';
+import { getPerson, savePerson } from '../service/peopleService';
 class PersonDetails extends Component {
 	state = {
 		person: {},
 	};
 
 	async componentDidMount() {
-		const { data: person } = await axios.get(
-			apiEndpoint + '/' + this.props.match.params.id
-		);
+		const { data: person } = await getPerson(this.props.match.params.id);
 		if (!person) return this.props.history.replace('/not-found');
 		this.setState({ person });
 	}
 
 	handleUpdate = async (curPerson) => {
 		curPerson.name = 'Updated';
-		const { data: person } = await axios.put(
-			apiEndpoint + '/' + curPerson.id,
-			curPerson
-		);
+		const { data: person } = await savePerson(curPerson);
 		this.setState({ person });
 	};
 
