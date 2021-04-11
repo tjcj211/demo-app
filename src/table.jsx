@@ -3,6 +3,22 @@ import axios from 'axios';
 import TableBody from './components/tableBody';
 import TableHead from './components/tableHead';
 const apiEndpoint = 'https://jsonplaceholder.typicode.com/users';
+
+axios.interceptors.response.use(null, (error) => {
+	console.log('interceptor');
+	const expectedError =
+		error.response &&
+		error.response.status >= 400 &&
+		error.response.statues < 500;
+	if (!expectedError) {
+		//only server-side errors, 400-500 are reserved for client errors
+		console.log('logging the error', error);
+		alert('An unexpected error occurred.');
+	}
+
+	return Promise.reject(error); //reject the promise to be handled by the client.
+});
+
 class Table extends Component {
 	constructor(props) {
 		super(props);
@@ -37,7 +53,8 @@ class Table extends Component {
 		try {
 			await axios.delete(apiEndpoint + '/' + person.id);
 		} catch (error) {
-			if (error.respond && error.respond.status == 404) {
+			console.log('delete exception');
+			if (error.respond && error.respond.status === 404) {
 				alert('This person has already been deleted');
 				this.setState({ people });
 			}
